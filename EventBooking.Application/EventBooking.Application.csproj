@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Behaviors\" />
+    <Folder Include="Common\" />
+    <Folder Include="Features\Events\" />
+    <Folder Include="Features\Customers\" />
+    <Folder Include="Features\TicketTypes\" />
+  </ItemGroup>
+
+</Project>
