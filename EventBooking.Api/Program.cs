@@ -16,6 +16,25 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+// Seed data on startup (development only)
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var db = services.GetRequiredService<EventBookingDbContext>();
+        // apply any pending migrations (safe for development)
+        db.Database.Migrate();
+        // seed initial data
+        DataSeeder.SeedAsync(db).GetAwaiter().GetResult();
+    }
+    catch (Exception ex)
+    {
+        // If seeding fails, log error to console. In production use a logger.
+        Console.WriteLine($"Error seeding database: {ex}");
+    }
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
