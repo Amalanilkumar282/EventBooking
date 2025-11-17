@@ -6,11 +6,17 @@ using MediatR;
 using EventBooking.Application.Features.Events.Commands;
 using EventBooking.Application.Interfaces;
 using EventBooking.Infrastructure.Reposiories;
+using FluentValidation;
+using EventBooking.Application.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+
+// Register validators explicitly
+builder.Services.AddScoped<IValidator<CreateEventCommand>, CreateEventCommandValidator>();
+builder.Services.AddScoped<IValidator<EventBooking.Application.Features.Bookings.Commands.CreateBookingCommand>, CreateBookingCommandValidator>();
 
 // Register AutoMapper from Application assembly
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
