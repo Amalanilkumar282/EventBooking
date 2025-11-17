@@ -1,6 +1,11 @@
 using EventBooking.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
+using EventBooking.Application.Mapping;
+using MediatR;
+using EventBooking.Application.Features.Events.Commands;
+using EventBooking.Application.Interfaces;
+using EventBooking.Infrastructure.Reposiories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,11 +13,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 // Register AutoMapper from Application assembly
-builder.Services.AddAutoMapper(typeof(EventBooking.Application.Mapping.MappingProfile).Assembly);
+builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
 // Register DbContext
 builder.Services.AddDbContext<EventBookingDbContext>(opts =>
     opts.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("EventBooking.Infrastructure")));
+
+// Register repositories
+builder.Services.AddScoped<IEventRepository, EventRepository>();
+
+// Register MediatR - handlers live in Application assembly
+builder.Services.AddMediatR(typeof(CreateEventCommand).Assembly);
 
 // Add OpenAPI / Swagger services
 builder.Services.AddEndpointsApiExplorer();

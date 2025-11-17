@@ -1,11 +1,11 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using MediatR;
 using AutoMapper;
 using EventBooking.Application.DTOs;
-using EventBooking.Infrastructure.Persistence;
-using EventBooking.Domain.Entities;
+using EventBooking.Application.Features.Events.Queries;
+using EventBooking.Application.Features.Events.Commands;
 
 namespace EventBooking.Api.Controllers
 {
@@ -13,12 +13,12 @@ namespace EventBooking.Api.Controllers
     [Route("api/[controller]")]
     public class EventsController : ControllerBase
     {
-        private readonly EventBookingDbContext _db;
+        private readonly IMediator _mediator;
         private readonly IMapper _mapper;
 
-        public EventsController(EventBookingDbContext db, IMapper mapper)
+        public EventsController(IMediator mediator, IMapper mapper)
         {
-            _db = db;
+            _mediator = mediator;
             _mapper = mapper;
         }
 
@@ -26,33 +26,28 @@ namespace EventBooking.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var events = await _db.Events.ToListAsync();
-            var dto = _mapper.Map<EventDto[]>(events);
-            return Ok(dto);
+            var events = await _mediator.Send(new GetEventsQuery());
+            return Ok(events);
         }
 
         // GET: api/events/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
-            var ev = await _db.Events.FindAsync(id);
+            // simple approach - reuse repository via query handler later if needed
+            var events = await _mediator.Send(new GetEventsQuery());
+            var ev = events.Find(e => e.Id == id);
             if (ev == null) return NotFound();
-            return Ok(_mapper.Map<EventDto>(ev));
+            return Ok(ev);
         }
 
         // POST: api/events
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateEventDto create)
         {
-            var ev = _mapper.Map<Event>(create);
-            ev.Id = Guid.NewGuid();
-            ev.CreatedAt = DateTime.UtcNow;
-
-            await _db.Events.AddAsync(ev);
-            await _db.SaveChangesAsync();
-
-            var dto = _mapper.Map<EventDto>(ev);
-            return CreatedAtAction(nameof(Get), new { id = ev.Id }, dto);
+            var cmd = new CreateEventCommand { Create = create };
+            var result = await _mediator.Send(cmd);
+            return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
         }
     }
 }
