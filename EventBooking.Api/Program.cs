@@ -1,18 +1,35 @@
+using EventBooking.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+
+// Register DbContext
+builder.Services.AddDbContext<EventBookingDbContext>(opts =>
+    opts.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("EventBooking.Infrastructure")));
+
+// Add OpenAPI / Swagger services
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    // Swashbuckle middleware
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "EventBooking API V1");
+        c.RoutePrefix = "openapi/ui"; // serve UI at /openapi/ui
+    });
 }
+
+// keep MapOpenApi if still desired
+app.MapOpenApi();
 
 app.UseHttpsRedirection();
 
