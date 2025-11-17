@@ -1,10 +1,14 @@
 using EventBooking.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+
+// Register AutoMapper from Application assembly
+builder.Services.AddAutoMapper(typeof(EventBooking.Application.Mapping.MappingProfile).Assembly);
 
 // Register DbContext
 builder.Services.AddDbContext<EventBookingDbContext>(opts =>
