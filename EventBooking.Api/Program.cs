@@ -10,35 +10,37 @@ using FluentValidation;
 using EventBooking.Application.Validators;
 using EventBooking.Application.Behaviors;
 using EventBooking.Api.Middleware;
+using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
+var services = builder.Services;
 
-// Register validators explicitly
-builder.Services.AddScoped<IValidator<CreateEventCommand>, CreateEventCommandValidator>();
-builder.Services.AddScoped<IValidator<EventBooking.Application.Features.Bookings.Commands.CreateBookingCommand>, CreateBookingCommandValidator>();
+// Enable MVC and FluentValidation automatic model validation
+services.AddControllers().AddFluentValidation();
+// Register FluentValidation validators from the Application assembly
+services.AddValidatorsFromAssemblyContaining<CreateEventDtoValidator>();
 
 // Register AutoMapper from Application assembly
-builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
+services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
 // Register DbContext
-builder.Services.AddDbContext<EventBookingDbContext>(opts =>
+services.AddDbContext<EventBookingDbContext>(opts =>
     opts.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("EventBooking.Infrastructure")));
 
 // Register repositories
-builder.Services.AddScoped<IEventRepository, EventRepository>();
+services.AddScoped<IEventRepository, EventRepository>();
 
 // Register MediatR - handlers live in Application assembly
-builder.Services.AddMediatR(typeof(CreateEventCommand).Assembly);
+services.AddMediatR(typeof(CreateEventCommand).Assembly);
 
-// Register MediatR validation behavior so validators run automatically
-builder.Services.AddTransient(typeof(MediatR.IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+// Register MediatR validation behavior so validators run automatically (defense-in-depth)
+services.AddTransient(typeof(MediatR.IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 // Add OpenAPI / Swagger services
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+services.AddEndpointsApiExplorer();
+services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -48,10 +50,10 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 // Seed data on startup (development only)
 using (var scope = app.Services.CreateScope())
 {
-    var services = scope.ServiceProvider;
+    var servicesScope = scope.ServiceProvider;
     try
     {
-        var db = services.GetRequiredService<EventBookingDbContext>();
+        var db = servicesScope.GetRequiredService<EventBookingDbContext>();
         // apply any pending migrations (safe for development)
         db.Database.Migrate();
         // seed initial data
@@ -76,7 +78,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-// keep MapOpenApi if still desired.
+// keep MapOpenApi if still desired
 app.MapOpenApi();
 
 app.UseHttpsRedirection();
