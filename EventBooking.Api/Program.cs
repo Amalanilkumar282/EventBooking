@@ -76,7 +76,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-// keep MapOpenApi if still desired
+// keep MapOpenApi if still desired.
 app.MapOpenApi();
 
 app.UseHttpsRedirection();
