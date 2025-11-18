@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Common\" />
-    <Folder Include="Features\Events\" />
     <Folder Include="Features\Customers\" />
     <Folder Include="Features\TicketTypes\" />
   </ItemGroup>

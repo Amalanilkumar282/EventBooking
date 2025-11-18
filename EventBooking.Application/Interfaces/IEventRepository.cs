@@ -10,5 +10,8 @@ namespace EventBooking.Application.Interfaces
         Task<List<Event>> GetAllAsync();
         Task<Event?> GetByIdAsync(Guid id);
         Task AddAsync(Event ev);
+        Task UpdateAsync(Event ev);
+        Task DeleteAsync(Guid id);
+        Task<bool> ExistsAsync(Guid id);
     }
 }

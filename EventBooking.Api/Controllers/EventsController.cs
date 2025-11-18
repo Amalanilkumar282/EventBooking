@@ -34,9 +34,7 @@ namespace EventBooking.Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
-            // simple approach - reuse repository via query handler later if needed
-            var events = await _mediator.Send(new GetEventsQuery());
-            var ev = events.Find(e => e.Id == id);
+            var ev = await _mediator.Send(new GetEventByIdQuery { Id = id });
             if (ev == null) return NotFound();
             return Ok(ev);
         }
@@ -48,6 +46,25 @@ namespace EventBooking.Api.Controllers
             var cmd = new CreateEventCommand { Create = create };
             var result = await _mediator.Send(cmd);
             return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
+        }
+
+        // PUT: api/events/{id}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(Guid id, [FromBody] UpdateEventDto update)
+        {
+            var cmd = new UpdateEventCommand { Id = id, Update = update };
+            var result = await _mediator.Send(cmd);
+            if (result == null) return NotFound();
+            return Ok(result);
+        }
+
+        // DELETE: api/events/{id}
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var cmd = new DeleteEventCommand { Id = id };
+            await _mediator.Send(cmd);
+            return NoContent();
         }
     }
 }

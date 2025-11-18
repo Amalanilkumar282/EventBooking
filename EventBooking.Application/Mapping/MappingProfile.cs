@@ -18,6 +18,8 @@ namespace EventBooking.Application.Mapping
             // dto -> entity
             CreateMap<CreateEventDto, Event>();
             CreateMap<CreateBookingDto, Booking>();
+            CreateMap<UpdateEventDto, Event>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         }
     }
 }
