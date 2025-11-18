@@ -51,6 +51,23 @@ namespace EventBooking.Api.Middleware
                 var json = JsonSerializer.Serialize(response);
                 await context.Response.WriteAsync(json);
             }
+            catch (KeyNotFoundException knf)
+            {
+                // Map not-found exceptions to 404
+                _logger.LogWarning(knf, "Resource not found");
+                context.Response.StatusCode = StatusCodes.Status404NotFound;
+                context.Response.ContentType = "application/json";
+
+                var response = new
+                {
+                    type = "https://example.com/not-found",
+                    title = knf.Message ?? "Resource not found",
+                    status = 404
+                };
+
+                var json = JsonSerializer.Serialize(response);
+                await context.Response.WriteAsync(json);
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Unhandled exception");
