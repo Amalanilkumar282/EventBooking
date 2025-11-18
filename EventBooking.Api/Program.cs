@@ -8,6 +8,8 @@ using EventBooking.Application.Interfaces;
 using EventBooking.Infrastructure.Reposiories;
 using FluentValidation;
 using EventBooking.Application.Validators;
+using EventBooking.Application.Behaviors;
+using EventBooking.Api.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,11 +33,17 @@ builder.Services.AddScoped<IEventRepository, EventRepository>();
 // Register MediatR - handlers live in Application assembly
 builder.Services.AddMediatR(typeof(CreateEventCommand).Assembly);
 
+// Register MediatR validation behavior so validators run automatically
+builder.Services.AddTransient(typeof(MediatR.IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
 // Add OpenAPI / Swagger services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+// Use global exception handling middleware
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Seed data on startup (development only)
 using (var scope = app.Services.CreateScope())
@@ -68,7 +76,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-// keep MapOpenApi if still desired
+// keep MapOpenApi if still desired.
 app.MapOpenApi();
 
 app.UseHttpsRedirection();
