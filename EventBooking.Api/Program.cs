@@ -11,6 +11,8 @@ using EventBooking.Application.Validators;
 using EventBooking.Application.Behaviors;
 using EventBooking.Api.Middleware;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +20,29 @@ var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 
 // Enable MVC and FluentValidation automatic model validation
-services.AddControllers().AddFluentValidation();
+services.AddControllers()
+    .ConfigureApiBehaviorOptions(options =>
+    {
+        options.InvalidModelStateResponseFactory = context =>
+        {
+            var errors = context.ModelState
+                .Where(kvp => kvp.Value.Errors.Count > 0)
+                .ToDictionary(
+                    kvp => kvp.Key,
+                    kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+                );
+
+            var problemDetails = new ValidationProblemDetails(errors)
+            {
+                Type = "https://example.com/validation-error",
+                Title = "One or more validation errors occurred.",
+                Status = StatusCodes.Status400BadRequest
+            };
+
+            return new BadRequestObjectResult(problemDetails);
+        };
+    })
+    .AddFluentValidation();
 // Register FluentValidation validators from the Application assembly
 services.AddValidatorsFromAssemblyContaining<CreateEventDtoValidator>();
 
