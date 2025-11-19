@@ -55,6 +55,9 @@ services.AddDbContext<EventBookingDbContext>(opts =>
 
 // Register repositories
 services.AddScoped<IEventRepository, EventRepository>();
+services.AddScoped<ICustomerRepository, CustomerRepository>();
+services.AddScoped<ITicketTypeRepository, TicketTypeRepository>();
+services.AddScoped<IBookingRepository, BookingRepository>();
 
 // Register MediatR - handlers live in Application assembly
 services.AddMediatR(typeof(CreateEventCommand).Assembly);
