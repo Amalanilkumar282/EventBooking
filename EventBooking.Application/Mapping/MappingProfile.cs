@@ -17,8 +17,19 @@ namespace EventBooking.Application.Mapping
 
             // dto -> entity
             CreateMap<CreateEventDto, Event>();
+            CreateMap<CreateCustomerDto, Customer>();
+            CreateMap<CreateTicketTypeDto, TicketType>();
             CreateMap<CreateBookingDto, Booking>();
+            
             CreateMap<UpdateEventDto, Event>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+            CreateMap<UpdateCustomerDto, Customer>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+            CreateMap<UpdateTicketTypeDto, TicketType>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+            CreateMap<UpdateBookingDto, Booking>()
+                .ForMember(dest => dest.Status, opt => opt.MapFrom((src, dest) => 
+                    src.Status != null ? Enum.Parse<BookingStatus>(src.Status) : dest.Status))
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         }
     }
