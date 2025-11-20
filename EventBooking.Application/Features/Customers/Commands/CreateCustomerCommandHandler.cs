@@ -31,6 +31,9 @@ namespace EventBooking.Application.Features.Customers.Commands
             var customer = _mapper.Map<Customer>(request.Create);
             customer.Id = Guid.NewGuid();
             customer.CreatedAt = DateTime.UtcNow;
+            
+            // Hash the password using BCrypt
+            customer.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Create.Password);
 
             await _repo.AddAsync(customer);
             return _mapper.Map<CustomerDto>(customer);

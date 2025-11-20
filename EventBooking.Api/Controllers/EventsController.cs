@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using MediatR;
 using AutoMapper;
 using EventBooking.Application.DTOs;
@@ -11,6 +12,7 @@ namespace EventBooking.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize] // Require authentication for all endpoints
     public class EventsController : ControllerBase
     {
         private readonly IMediator _mediator;

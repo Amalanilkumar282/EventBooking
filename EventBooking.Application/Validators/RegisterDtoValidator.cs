@@ -3,9 +3,12 @@ using EventBooking.Application.DTOs;
 
 namespace EventBooking.Application.Validators
 {
-    public class CreateCustomerDtoValidator : AbstractValidator<CreateCustomerDto>
+    /// <summary>
+    /// Validator for RegisterDto
+    /// </summary>
+    public class RegisterDtoValidator : AbstractValidator<RegisterDto>
     {
-        public CreateCustomerDtoValidator()
+        public RegisterDtoValidator()
         {
             RuleFor(x => x.FirstName)
                 .NotEmpty().WithMessage("First name is required")
