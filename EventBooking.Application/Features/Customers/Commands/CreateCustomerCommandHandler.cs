@@ -9,6 +9,9 @@ using EventBooking.Domain.Entities;
 
 namespace EventBooking.Application.Features.Customers.Commands
 {
+    /// <summary>
+    /// Handler for creating a new customer with password hashing
+    /// </summary>
     public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand, CustomerDto>
     {
         private readonly ICustomerRepository _repo;

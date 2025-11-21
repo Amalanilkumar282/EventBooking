@@ -8,6 +8,9 @@ using EventBooking.Application.Interfaces;
 
 namespace EventBooking.Application.Features.Bookings.Queries
 {
+    /// <summary>
+    /// Handler for retrieving all bookings
+    /// </summary>
     public class GetBookingsQueryHandler : IRequestHandler<GetBookingsQuery, List<BookingDto>>
     {
         private readonly IBookingRepository _repo;

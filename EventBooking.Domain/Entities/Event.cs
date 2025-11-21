@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace EventBooking.Domain.Entities
 {
+    /// <summary>
+    /// Domain entity representing an event that customers can book
+    /// </summary>
     public class Event
     {
         public Guid Id { get; set; }

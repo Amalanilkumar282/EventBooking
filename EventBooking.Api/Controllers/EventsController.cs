@@ -10,6 +10,9 @@ using EventBooking.Application.Features.Events.Commands;
 
 namespace EventBooking.Api.Controllers
 {
+    /// <summary>
+    /// API controller for managing events
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     [Authorize] // Require authentication for all endpoints
@@ -24,6 +27,10 @@ namespace EventBooking.Api.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get all events
+        /// </summary>
+        /// <returns>List of events</returns>
         // GET: api/events
         [HttpGet]
         public async Task<IActionResult> Get()
@@ -32,6 +39,11 @@ namespace EventBooking.Api.Controllers
             return Ok(events);
         }
 
+        /// <summary>
+        /// Get a specific event by ID
+        /// </summary>
+        /// <param name="id">Event ID</param>
+        /// <returns>Event details or 404 if not found</returns>
         // GET: api/events/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
@@ -41,6 +53,11 @@ namespace EventBooking.Api.Controllers
             return Ok(ev);
         }
 
+        /// <summary>
+        /// Create a new event
+        /// </summary>
+        /// <param name="create">Event creation data</param>
+        /// <returns>Created event</returns>
         // POST: api/events
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateEventDto create)
@@ -50,6 +67,12 @@ namespace EventBooking.Api.Controllers
             return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
         }
 
+        /// <summary>
+        /// Update an existing event
+        /// </summary>
+        /// <param name="id">Event ID</param>
+        /// <param name="update">Event update data</param>
+        /// <returns>Updated event or 404 if not found</returns>
         // PUT: api/events/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(Guid id, [FromBody] UpdateEventDto update)
@@ -60,6 +83,11 @@ namespace EventBooking.Api.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Delete an event
+        /// </summary>
+        /// <param name="id">Event ID</param>
+        /// <returns>No content</returns>
         // DELETE: api/events/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)

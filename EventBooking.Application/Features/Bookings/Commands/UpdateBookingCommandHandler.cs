@@ -9,6 +9,9 @@ using EventBooking.Domain.Entities;
 
 namespace EventBooking.Application.Features.Bookings.Commands
 {
+    /// <summary>
+    /// Handler for updating an existing booking
+    /// </summary>
     public class UpdateBookingCommandHandler : IRequestHandler<UpdateBookingCommand, BookingDto?>
     {
         private readonly IBookingRepository _repo;

@@ -10,6 +10,9 @@ using EventBooking.Application.Features.Customers.Commands;
 
 namespace EventBooking.Api.Controllers
 {
+    /// <summary>
+    /// API controller for managing customers
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     [Authorize] // Require authentication for all endpoints
@@ -24,6 +27,10 @@ namespace EventBooking.Api.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get all customers
+        /// </summary>
+        /// <returns>List of customers</returns>
         // GET: api/customers
         [HttpGet]
         public async Task<IActionResult> Get()
@@ -32,6 +39,11 @@ namespace EventBooking.Api.Controllers
             return Ok(customers);
         }
 
+        /// <summary>
+        /// Get a specific customer by ID
+        /// </summary>
+        /// <param name="id">Customer ID</param>
+        /// <returns>Customer details or 404 if not found</returns>
         // GET: api/customers/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
@@ -41,6 +53,11 @@ namespace EventBooking.Api.Controllers
             return Ok(customer);
         }
 
+        /// <summary>
+        /// Create a new customer
+        /// </summary>
+        /// <param name="create">Customer creation data</param>
+        /// <returns>Created customer</returns>
         // POST: api/customers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateCustomerDto create)
@@ -50,6 +67,12 @@ namespace EventBooking.Api.Controllers
             return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
         }
 
+        /// <summary>
+        /// Update an existing customer
+        /// </summary>
+        /// <param name="id">Customer ID</param>
+        /// <param name="update">Customer update data</param>
+        /// <returns>Updated customer or 404 if not found</returns>
         // PUT: api/customers/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(Guid id, [FromBody] UpdateCustomerDto update)
@@ -60,6 +83,11 @@ namespace EventBooking.Api.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Delete a customer
+        /// </summary>
+        /// <param name="id">Customer ID</param>
+        /// <returns>No content</returns>
         // DELETE: api/customers/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)

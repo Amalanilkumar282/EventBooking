@@ -9,6 +9,9 @@ using EventBooking.Domain.Entities;
 
 namespace EventBooking.Application.Features.Events.Commands
 {
+    /// <summary>
+    /// Handler for creating a new event
+    /// </summary>
     public class CreateEventCommandHandler : IRequestHandler<CreateEventCommand, EventDto>
     {
         private readonly IEventRepository _repo;

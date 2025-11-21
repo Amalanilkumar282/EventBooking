@@ -7,6 +7,9 @@ using EventBooking.Application.Interfaces;
 
 namespace EventBooking.Application.Features.TicketTypes.Commands
 {
+    /// <summary>
+    /// Handler for updating an existing ticket type
+    /// </summary>
     public class UpdateTicketTypeCommandHandler : IRequestHandler<UpdateTicketTypeCommand, TicketTypeDto?>
     {
         private readonly ITicketTypeRepository _repo;

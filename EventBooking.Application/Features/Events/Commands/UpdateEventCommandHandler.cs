@@ -9,6 +9,9 @@ using System;
 
 namespace EventBooking.Application.Features.Events.Commands
 {
+    /// <summary>
+    /// Handler for updating an existing event
+    /// </summary>
     public class UpdateEventCommandHandler : IRequestHandler<UpdateEventCommand, EventDto?>
     {
         private readonly IEventRepository _repo;

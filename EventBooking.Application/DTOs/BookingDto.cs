@@ -2,6 +2,9 @@
 
 namespace EventBooking.Application.DTOs
 {
+    /// <summary>
+    /// DTO for booking information returned to clients
+    /// </summary>
     public class BookingDto
     {
         public Guid Id { get; set; }
@@ -16,7 +19,9 @@ namespace EventBooking.Application.DTOs
 
         public decimal TotalPrice { get; set; }
 
-        // Represent status as string in DTO to keep the API layer decoupled from domain enums
+        /// <summary>
+        /// Booking status represented as string (Pending, Confirmed, Cancelled)
+        /// </summary>
         public string Status { get; set; } = string.Empty;
 
         public DateTime CreatedAt { get; set; }

@@ -8,6 +8,9 @@ using EventBooking.Application.Interfaces;
 
 namespace EventBooking.Application.Features.Customers.Commands
 {
+    /// <summary>
+    /// Handler for updating an existing customer
+    /// </summary>
     public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand, CustomerDto?>
     {
         private readonly ICustomerRepository _repo;

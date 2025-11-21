@@ -7,6 +7,9 @@ using EventBooking.Application.Interfaces;
 
 namespace EventBooking.Application.Features.Events.Queries
 {
+    /// <summary>
+    /// Handler for retrieving a specific event by ID
+    /// </summary>
     public class GetEventByIdQueryHandler : IRequestHandler<GetEventByIdQuery, EventDto>
     {
         private readonly IEventRepository _repo;

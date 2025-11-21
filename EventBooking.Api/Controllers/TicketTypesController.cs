@@ -10,6 +10,9 @@ using EventBooking.Application.Features.TicketTypes.Commands;
 
 namespace EventBooking.Api.Controllers
 {
+    /// <summary>
+    /// API controller for managing ticket types
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     [Authorize] // Require authentication for all endpoints
@@ -24,6 +27,10 @@ namespace EventBooking.Api.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get all ticket types
+        /// </summary>
+        /// <returns>List of ticket types</returns>
         // GET: api/tickettypes
         [HttpGet]
         public async Task<IActionResult> Get()
@@ -32,6 +39,11 @@ namespace EventBooking.Api.Controllers
             return Ok(ticketTypes);
         }
 
+        /// <summary>
+        /// Get a specific ticket type by ID
+        /// </summary>
+        /// <param name="id">Ticket type ID</param>
+        /// <returns>Ticket type details or 404 if not found</returns>
         // GET: api/tickettypes/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
@@ -41,6 +53,11 @@ namespace EventBooking.Api.Controllers
             return Ok(ticketType);
         }
 
+        /// <summary>
+        /// Create a new ticket type
+        /// </summary>
+        /// <param name="create">Ticket type creation data</param>
+        /// <returns>Created ticket type</returns>
         // POST: api/tickettypes
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateTicketTypeDto create)
@@ -50,6 +67,12 @@ namespace EventBooking.Api.Controllers
             return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
         }
 
+        /// <summary>
+        /// Update an existing ticket type
+        /// </summary>
+        /// <param name="id">Ticket type ID</param>
+        /// <param name="update">Ticket type update data</param>
+        /// <returns>Updated ticket type or 404 if not found</returns>
         // PUT: api/tickettypes/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(Guid id, [FromBody] UpdateTicketTypeDto update)
@@ -60,6 +83,11 @@ namespace EventBooking.Api.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Delete a ticket type
+        /// </summary>
+        /// <param name="id">Ticket type ID</param>
+        /// <returns>No content</returns>
         // DELETE: api/tickettypes/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
