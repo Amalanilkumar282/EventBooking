@@ -5,6 +5,9 @@ using EventBooking.Domain.Entities;
 
 namespace EventBooking.Application.Interfaces
 {
+    /// <summary>
+    /// Repository interface for Booking persistence operations
+    /// </summary>
     public interface IBookingRepository
     {
         Task<List<Booking>> GetAllAsync();

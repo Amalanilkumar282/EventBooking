@@ -8,6 +8,9 @@ using EventBooking.Infrastructure.Persistence;
 
 namespace EventBooking.Infrastructure.Reposiories
 {
+    /// <summary>
+    /// Entity Framework implementation of IEventRepository
+    /// </summary>
     public class EventRepository : IEventRepository
     {
         private readonly EventBookingDbContext _db;

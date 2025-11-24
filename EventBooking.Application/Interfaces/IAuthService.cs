@@ -4,7 +4,7 @@ using EventBooking.Application.DTOs;
 namespace EventBooking.Application.Interfaces
 {
     /// <summary>
-    /// Service for handling authentication operations (login, token generation)
+    /// Service for handling authentication operations (login, registration)
     /// </summary>
     public interface IAuthService
     {

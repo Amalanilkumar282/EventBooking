@@ -16,11 +16,21 @@ namespace EventBooking.Infrastructure.Services
     {
         private readonly IConfiguration _configuration;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TokenService"/> class.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
         public TokenService(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
+        /// <summary>
+        /// Generates the access token.
+        /// </summary>
+        /// <param name="customerId">The customer identifier.</param>
+        /// <param name="email">The email.</param>
+        /// <returns>A string representing the generated JWT access token.</returns>
         public string GenerateAccessToken(string customerId, string email)
         {
             // Read JWT settings from configuration

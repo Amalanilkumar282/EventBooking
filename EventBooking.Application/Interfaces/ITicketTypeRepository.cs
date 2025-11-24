@@ -5,6 +5,9 @@ using EventBooking.Domain.Entities;
 
 namespace EventBooking.Application.Interfaces
 {
+    /// <summary>
+    /// Repository interface for TicketType persistence operations
+    /// </summary>
     public interface ITicketTypeRepository
     {
         Task<List<TicketType>> GetAllAsync();

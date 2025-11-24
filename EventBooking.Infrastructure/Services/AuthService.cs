@@ -31,6 +31,12 @@ namespace EventBooking.Infrastructure.Services
             _configuration = configuration;
         }
 
+        /// <summary>
+        /// Logs in a customer using the provided credentials
+        /// </summary>
+        /// <param name="loginDto">The login credentials</param>
+        /// <returns>A task that represents the asynchronous operation
+        /// The task result contains the login response data transfer object</returns>
         public async Task<LoginResponseDto?> LoginAsync(LoginDto loginDto)
         {
             // Find customer by email
@@ -65,6 +71,12 @@ namespace EventBooking.Infrastructure.Services
             };
         }
 
+        /// <summary>
+        /// Registers a new customer
+        /// </summary>
+        /// <param name="registerDto">The registration data</param>
+        /// <returns>A task that represents the asynchronous operation
+        /// The task result contains the registered customer data transfer object</returns>
         public async Task<CustomerDto> RegisterAsync(RegisterDto registerDto)
         {
             // Check if email already exists
