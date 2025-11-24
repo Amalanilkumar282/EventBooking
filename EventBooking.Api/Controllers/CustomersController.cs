@@ -28,14 +28,14 @@ namespace EventBooking.Api.Controllers
         }
 
         /// <summary>
-        /// Get all customers
+        /// Get customers with paging
         /// </summary>
-        /// <returns>List of customers</returns>
-        // GET: api/customers
+        // GET: api/customers?page=1&pageSize=20
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery] int page = 1, [FromQuery] int pageSize = 20)
         {
-            var customers = await _mediator.Send(new GetCustomersQuery());
+            var q = new GetCustomersQuery { Page = page, PageSize = pageSize };
+            var customers = await _mediator.Send(q);
             return Ok(customers);
         }
 

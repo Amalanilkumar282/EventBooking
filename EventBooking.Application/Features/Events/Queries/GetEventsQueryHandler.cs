@@ -9,7 +9,7 @@ using EventBooking.Application.Interfaces;
 namespace EventBooking.Application.Features.Events.Queries
 {
     /// <summary>
-    /// Handler for retrieving all events
+    /// Handler for retrieving events with filtering and paging
     /// </summary>
     public class GetEventsQueryHandler : IRequestHandler<GetEventsQuery, List<EventDto>>
     {
@@ -24,7 +24,7 @@ namespace EventBooking.Application.Features.Events.Queries
 
         public async Task<List<EventDto>> Handle(GetEventsQuery request, CancellationToken cancellationToken)
         {
-            var events = await _repo.GetAllAsync();
+            var events = await _repo.GetPagedAsync(request.Search, request.Page, request.PageSize);
             return _mapper.Map<List<EventDto>>(events);
         }
     }

@@ -83,5 +83,22 @@ namespace EventBooking.Infrastructure.Reposiories
             _logger.LogDebug("Checking existence for BookingId={BookingId}", id);
             return await _db.Bookings.AnyAsync(b => b.Id == id);
         }
+
+        public IQueryable<Booking> GetQueryable()
+        {
+            return _db.Bookings.AsQueryable();
+        }
+
+        public async Task<List<Booking>> GetPagedAsync(int page, int pageSize)
+        {
+            var ps = pageSize <= 0 ? 20 : (pageSize > 100 ? 100 : pageSize);
+            var p = page <= 0 ? 1 : page;
+
+            return await _db.Bookings
+                .OrderBy(b => b.CreatedAt)
+                .Skip((p - 1) * ps)
+                .Take(ps)
+                .ToListAsync();
+        }
     }
 }

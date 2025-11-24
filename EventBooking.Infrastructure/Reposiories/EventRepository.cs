@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using EventBooking.Application.Interfaces;
@@ -65,6 +66,30 @@ namespace EventBooking.Infrastructure.Reposiories
         {
             _logger.LogDebug("Checking existence for EventId={EventId}", id);
             return await _db.Events.AnyAsync(e => e.Id == id);
+        }
+
+        public IQueryable<Event> GetQueryable()
+        {
+            return _db.Events.AsQueryable();
+        }
+
+        public async Task<List<Event>> GetPagedAsync(string? search, int page, int pageSize)
+        {
+            var ps = pageSize <= 0 ? 20 : (pageSize > 100 ? 100 : pageSize);
+            var p = page <= 0 ? 1 : page;
+
+            var q = _db.Events.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                var s = search.Trim();
+                q = q.Where(e => e.Name.Contains(s) || (e.Description != null && e.Description.Contains(s)));
+            }
+
+            return await q
+                .OrderBy(e => e.StartDate)
+                .Skip((p - 1) * ps)
+                .Take(ps)
+                .ToListAsync();
         }
     }
 }

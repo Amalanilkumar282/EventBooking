@@ -28,14 +28,14 @@ namespace EventBooking.Api.Controllers
         }
 
         /// <summary>
-        /// Get all events
+        /// Get events with optional search and paging
         /// </summary>
-        /// <returns>List of events</returns>
-        // GET: api/events
+        // GET: api/events?search=term&page=1&pageSize=20
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery] string? search, [FromQuery] int page = 1, [FromQuery] int pageSize = 20)
         {
-            var events = await _mediator.Send(new GetEventsQuery());
+            var q = new GetEventsQuery { Search = search, Page = page, PageSize = pageSize };
+            var events = await _mediator.Send(q);
             return Ok(events);
         }
 

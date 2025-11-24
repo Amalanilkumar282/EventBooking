@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using EventBooking.Domain.Entities;
 
@@ -18,5 +19,11 @@ namespace EventBooking.Application.Interfaces
         Task UpdateAsync(Booking booking);
         Task DeleteAsync(Guid id);
         Task<bool> ExistsAsync(Guid id);
+
+        // Expose an IQueryable for advanced queries (filtering, paging)
+        IQueryable<Booking> GetQueryable();
+
+        // Provide paged retrieval to avoid EF Core dependency in Application layer
+        Task<List<Booking>> GetPagedAsync(int page, int pageSize);
     }
 }

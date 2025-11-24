@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using EventBooking.Application.Interfaces;
@@ -81,6 +82,25 @@ namespace EventBooking.Infrastructure.Reposiories
                 return await _db.Customers.AnyAsync(c => c.Email == email && c.Id != excludeId.Value);
             }
             return await _db.Customers.AnyAsync(c => c.Email == email);
+        }
+
+        public IQueryable<Customer> GetQueryable()
+        {
+            // Return IQueryable so callers can compose additional filters/pagination.
+            // Important: do not call ToList() here; let caller decide when to execute the query.
+            return _db.Customers.AsQueryable();
+        }
+
+        public async Task<List<Customer>> GetPagedAsync(int page, int pageSize)
+        {
+            var ps = pageSize <= 0 ? 20 : (pageSize > 100 ? 100 : pageSize);
+            var p = page <= 0 ? 1 : page;
+
+            return await _db.Customers
+                .OrderBy(c => c.CreatedAt)
+                .Skip((p - 1) * ps)
+                .Take(ps)
+                .ToListAsync();
         }
     }
 }
