@@ -5,6 +5,7 @@ using System.Text;
 using EventBooking.Application.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Logging;
 
 namespace EventBooking.Infrastructure.Services
 {
@@ -15,14 +16,17 @@ namespace EventBooking.Infrastructure.Services
     public class TokenService : ITokenService
     {
         private readonly IConfiguration _configuration;
+        private readonly ILogger<TokenService> _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TokenService"/> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
-        public TokenService(IConfiguration configuration)
+        /// <param name="logger">The logger.</param>
+        public TokenService(IConfiguration configuration, ILogger<TokenService> logger)
         {
             _configuration = configuration;
+            _logger = logger;
         }
 
         /// <summary>
@@ -33,6 +37,8 @@ namespace EventBooking.Infrastructure.Services
         /// <returns>A string representing the generated JWT access token.</returns>
         public string GenerateAccessToken(string customerId, string email)
         {
+            _logger.LogDebug("Generating access token for CustomerId={CustomerId}, Email={Email}", customerId, email);
+
             // Read JWT settings from configuration
             var jwtSettings = _configuration.GetSection("JwtSettings");
             var secretKey = jwtSettings["SecretKey"] ?? throw new InvalidOperationException("JWT SecretKey not configured");
@@ -62,8 +68,12 @@ namespace EventBooking.Infrastructure.Services
                 signingCredentials: credentials
             );
 
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+            _logger.LogDebug("Access token generated for CustomerId={CustomerId} with expiryMinutes={ExpiryMinutes}", customerId, expiryMinutes);
+
             // Convert token to string
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return tokenString;
         }
     }
 }
