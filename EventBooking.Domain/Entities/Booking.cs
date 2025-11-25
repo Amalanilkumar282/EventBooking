@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace EventBooking.Domain.Entities
 {
+    /// <summary>
+    /// Enumeration representing the status of a booking
+    /// </summary>
     public enum BookingStatus
     {
         Pending = 0,
@@ -13,6 +16,9 @@ namespace EventBooking.Domain.Entities
         Cancelled = 2
     }
 
+    /// <summary>
+    /// Domain entity representing a customer's booking for an event
+    /// </summary>
     public class Booking
     {
         public Guid Id { get; set; }

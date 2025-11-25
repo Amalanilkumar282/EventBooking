@@ -2,6 +2,9 @@ using System;
 
 namespace EventBooking.Application.DTOs
 {
+    /// <summary>
+    /// DTO for creating a new event
+    /// </summary>
     public class CreateEventDto
     {
         public string Name { get; set; } = string.Empty;

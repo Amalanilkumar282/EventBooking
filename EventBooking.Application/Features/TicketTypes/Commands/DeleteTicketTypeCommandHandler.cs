@@ -5,6 +5,9 @@ using EventBooking.Application.Interfaces;
 
 namespace EventBooking.Application.Features.TicketTypes.Commands
 {
+    /// <summary>
+    /// Handler for deleting a ticket type
+    /// </summary>
     public class DeleteTicketTypeCommandHandler : IRequestHandler<DeleteTicketTypeCommand, Unit>
     {
         private readonly ITicketTypeRepository _repo;

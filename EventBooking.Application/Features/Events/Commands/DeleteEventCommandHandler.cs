@@ -6,6 +6,9 @@ using System;
 
 namespace EventBooking.Application.Features.Events.Commands
 {
+    /// <summary>
+    /// Handler for deleting an event
+    /// </summary>
     public class DeleteEventCommandHandler : IRequestHandler<DeleteEventCommand, Unit>
     {
         private readonly IEventRepository _repo;

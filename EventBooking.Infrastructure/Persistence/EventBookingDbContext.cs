@@ -57,6 +57,7 @@ namespace EventBooking.Infrastructure.Persistence
                 cb.Property(c => c.FirstName).IsRequired().HasMaxLength(100);
                 cb.Property(c => c.LastName).IsRequired().HasMaxLength(100);
                 cb.Property(c => c.Email).IsRequired().HasMaxLength(256);
+                cb.Property(c => c.PasswordHash).IsRequired().HasMaxLength(500);
                 cb.HasIndex(c => c.Email).IsUnique();
                 cb.Property(c => c.CreatedAt).IsRequired();
 

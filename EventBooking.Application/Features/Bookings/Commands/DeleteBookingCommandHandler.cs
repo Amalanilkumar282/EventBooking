@@ -5,6 +5,9 @@ using EventBooking.Application.Interfaces;
 
 namespace EventBooking.Application.Features.Bookings.Commands
 {
+    /// <summary>
+    /// Handler for deleting a booking
+    /// </summary>
     public class DeleteBookingCommandHandler : IRequestHandler<DeleteBookingCommand, Unit>
     {
         private readonly IBookingRepository _repo;
@@ -16,7 +19,7 @@ namespace EventBooking.Application.Features.Bookings.Commands
 
         public async Task<Unit> Handle(DeleteBookingCommand request, CancellationToken cancellationToken)
         {
-            await _repo.DeleteAsync(request.Id);
+            await _repo.DeleteAsync(request.Id, cancellationToken);
             return Unit.Value;
         }
     }

@@ -9,6 +9,9 @@ using EventBooking.Domain.Entities;
 
 namespace EventBooking.Application.Features.Bookings.Commands
 {
+    /// <summary>
+    /// Handler for updating an existing booking
+    /// </summary>
     public class UpdateBookingCommandHandler : IRequestHandler<UpdateBookingCommand, BookingDto?>
     {
         private readonly IBookingRepository _repo;
@@ -22,7 +25,7 @@ namespace EventBooking.Application.Features.Bookings.Commands
 
         public async Task<BookingDto?> Handle(UpdateBookingCommand request, CancellationToken cancellationToken)
         {
-            var existing = await _repo.GetByIdAsync(request.Id);
+            var existing = await _repo.GetByIdAsync(request.Id, cancellationToken);
             if (existing == null) return null;
 
             var originalSeats = existing.Seats;
@@ -35,7 +38,7 @@ namespace EventBooking.Application.Features.Bookings.Commands
                 existing.Seats = originalSeats;
             }
 
-            await _repo.UpdateAsync(existing);
+            await _repo.UpdateAsync(existing, cancellationToken);
             return _mapper.Map<BookingDto>(existing);
         }
     }

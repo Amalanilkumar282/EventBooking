@@ -9,6 +9,9 @@ using EventBooking.Domain.Entities;
 
 namespace EventBooking.Application.Features.Bookings.Commands
 {
+    /// <summary>
+    /// Handler for creating a new booking with validation and price calculation
+    /// </summary>
     public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand, BookingDto>
     {
         private readonly IBookingRepository _repo;

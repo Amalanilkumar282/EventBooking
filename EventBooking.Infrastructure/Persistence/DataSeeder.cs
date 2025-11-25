@@ -80,14 +80,17 @@ namespace EventBooking.Infrastructure.Persistence
             ticketTypes.AddRange(new[] { foodEntry, foodTasting });
 
             // Prepare customers
+            // Password for all seed customers: "Password123" (hashed using BCrypt)
+            var passwordHash = "$2a$12$iklihucJjkhCg/IQeZ6Wr.GG5J8lCoGZywmBwZL9PKqzht6hZ6QIi";
+            
             var customers = new List<Customer>
             {
-                new Customer { Id = Guid.NewGuid(), FirstName = "Alice", LastName = "Smith", Email = "alice.smith@example.com", PhoneNumber = "555-0001", CreatedAt = DateTime.UtcNow },
-                new Customer { Id = Guid.NewGuid(), FirstName = "Bob", LastName = "Johnson", Email = "bob.johnson@example.com", PhoneNumber = "555-0002", CreatedAt = DateTime.UtcNow },
-                new Customer { Id = Guid.NewGuid(), FirstName = "Carol", LastName = "Williams", Email = "carol.williams@example.com", PhoneNumber = "555-0003", CreatedAt = DateTime.UtcNow },
-                new Customer { Id = Guid.NewGuid(), FirstName = "David", LastName = "Brown", Email = "david.brown@example.com", PhoneNumber = "555-0004", CreatedAt = DateTime.UtcNow },
-                new Customer { Id = Guid.NewGuid(), FirstName = "Eve", LastName = "Davis", Email = "eve.davis@example.com", PhoneNumber = "555-0005", CreatedAt = DateTime.UtcNow },
-                new Customer { Id = Guid.NewGuid(), FirstName = "Frank", LastName = "Miller", Email = "frank.miller@example.com", PhoneNumber = "555-0006", CreatedAt = DateTime.UtcNow }
+                new Customer { Id = Guid.NewGuid(), FirstName = "Alice", LastName = "Smith", Email = "alice.smith@example.com", PhoneNumber = "555-0001", PasswordHash = passwordHash, CreatedAt = DateTime.UtcNow },
+                new Customer { Id = Guid.NewGuid(), FirstName = "Bob", LastName = "Johnson", Email = "bob.johnson@example.com", PhoneNumber = "555-0002", PasswordHash = passwordHash, CreatedAt = DateTime.UtcNow },
+                new Customer { Id = Guid.NewGuid(), FirstName = "Carol", LastName = "Williams", Email = "carol.williams@example.com", PhoneNumber = "555-0003", PasswordHash = passwordHash, CreatedAt = DateTime.UtcNow },
+                new Customer { Id = Guid.NewGuid(), FirstName = "David", LastName = "Brown", Email = "david.brown@example.com", PhoneNumber = "555-0004", PasswordHash = passwordHash, CreatedAt = DateTime.UtcNow },
+                new Customer { Id = Guid.NewGuid(), FirstName = "Eve", LastName = "Davis", Email = "eve.davis@example.com", PhoneNumber = "555-0005", PasswordHash = passwordHash, CreatedAt = DateTime.UtcNow },
+                new Customer { Id = Guid.NewGuid(), FirstName = "Frank", LastName = "Miller", Email = "frank.miller@example.com", PhoneNumber = "555-0006", PasswordHash = passwordHash, CreatedAt = DateTime.UtcNow }
             };
 
             // Prepare bookings across events

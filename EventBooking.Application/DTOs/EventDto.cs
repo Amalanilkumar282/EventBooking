@@ -2,6 +2,9 @@ using System;
 
 namespace EventBooking.Application.DTOs
 {
+    /// <summary>
+    /// DTO for event information returned to clients
+    /// </summary>
     public class EventDto
     {
         public Guid Id { get; set; }

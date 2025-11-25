@@ -2,6 +2,9 @@ using System;
 
 namespace EventBooking.Application.DTOs
 {
+    /// <summary>
+    /// DTO for updating an existing event with partial update support
+    /// </summary>
     public class UpdateEventDto
     {
         public string? Name { get; set; }

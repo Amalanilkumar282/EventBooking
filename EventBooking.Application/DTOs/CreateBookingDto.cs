@@ -2,6 +2,9 @@ using System;
 
 namespace EventBooking.Application.DTOs
 {
+    /// <summary>
+    /// DTO for creating a new booking
+    /// </summary>
     public class CreateBookingDto
     {
         public Guid EventId { get; set; }

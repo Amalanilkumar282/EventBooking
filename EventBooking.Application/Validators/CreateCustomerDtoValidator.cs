@@ -20,6 +20,11 @@ namespace EventBooking.Application.Validators
                 .EmailAddress().WithMessage("Invalid email format")
                 .MaximumLength(256).WithMessage("Email cannot exceed 256 characters");
 
+            RuleFor(x => x.Password)
+                .NotEmpty().WithMessage("Password is required")
+                .MinimumLength(6).WithMessage("Password must be at least 6 characters")
+                .MaximumLength(100).WithMessage("Password cannot exceed 100 characters");
+
             RuleFor(x => x.PhoneNumber)
                 .MaximumLength(20).WithMessage("Phone number cannot exceed 20 characters")
                 .When(x => !string.IsNullOrEmpty(x.PhoneNumber));

@@ -9,6 +9,9 @@ using EventBooking.Domain.Entities;
 
 namespace EventBooking.Application.Features.Events.Commands
 {
+    /// <summary>
+    /// Handler for creating a new event
+    /// </summary>
     public class CreateEventCommandHandler : IRequestHandler<CreateEventCommand, EventDto>
     {
         private readonly IEventRepository _repo;
@@ -26,7 +29,7 @@ namespace EventBooking.Application.Features.Events.Commands
             ev.Id = Guid.NewGuid();
             ev.CreatedAt = DateTime.UtcNow;
 
-            await _repo.AddAsync(ev);
+            await _repo.AddAsync(ev, cancellationToken);
             return _mapper.Map<EventDto>(ev);
         }
     }

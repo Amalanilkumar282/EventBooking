@@ -4,6 +4,9 @@ using EventBooking.Domain.Entities;
 
 namespace EventBooking.Application.Mapping
 {
+    /// <summary>
+    /// AutoMapper profile defining mappings between domain entities and DTOs
+    /// </summary>
     public class MappingProfile : Profile
     {
         public MappingProfile()

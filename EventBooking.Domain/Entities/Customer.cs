@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace EventBooking.Domain.Entities
 {
+    /// <summary>
+    /// Customer entity - represents a user who can book tickets
+    /// Now includes authentication via PasswordHash
+    /// </summary>
     public class Customer
     {
         public Guid Id { get; set; }
@@ -15,6 +19,11 @@ namespace EventBooking.Domain.Entities
 
         public string Email { get; set; } = string.Empty;
         public string? PhoneNumber { get; set; }
+
+        /// <summary>
+        /// BCrypt hashed password for authentication
+        /// </summary>
+        public string PasswordHash { get; set; } = string.Empty;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

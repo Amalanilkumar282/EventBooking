@@ -8,6 +8,9 @@ using EventBooking.Application.Interfaces;
 
 namespace EventBooking.Application.Features.Customers.Queries
 {
+    /// <summary>
+    /// Handler for retrieving customers with paging
+    /// </summary>
     public class GetCustomersQueryHandler : IRequestHandler<GetCustomersQuery, List<CustomerDto>>
     {
         private readonly ICustomerRepository _repo;
@@ -21,7 +24,7 @@ namespace EventBooking.Application.Features.Customers.Queries
 
         public async Task<List<CustomerDto>> Handle(GetCustomersQuery request, CancellationToken cancellationToken)
         {
-            var customers = await _repo.GetAllAsync();
+            var customers = await _repo.GetPagedAsync(request.Page, request.PageSize);
             return _mapper.Map<List<CustomerDto>>(customers);
         }
     }

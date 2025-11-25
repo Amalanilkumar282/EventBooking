@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace EventBooking.Domain.Entities
 {
+    /// <summary>
+    /// Domain entity representing a ticket type/category for an event with specific pricing
+    /// </summary>
     public class TicketType
     {
         public Guid Id { get; set; }
