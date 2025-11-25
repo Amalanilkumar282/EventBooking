@@ -8,6 +8,9 @@ using EventBooking.Application.Interfaces;
 
 namespace EventBooking.Application.Features.TicketTypes.Queries
 {
+    /// <summary>
+    /// Handler for retrieving all ticket types
+    /// </summary>
     public class GetTicketTypesQueryHandler : IRequestHandler<GetTicketTypesQuery, List<TicketTypeDto>>
     {
         private readonly ITicketTypeRepository _repo;

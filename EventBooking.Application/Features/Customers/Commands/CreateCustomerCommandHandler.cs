@@ -9,6 +9,9 @@ using EventBooking.Domain.Entities;
 
 namespace EventBooking.Application.Features.Customers.Commands
 {
+    /// <summary>
+    /// Handler for creating a new customer with password hashing
+    /// </summary>
     public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand, CustomerDto>
     {
         private readonly ICustomerRepository _repo;
@@ -31,6 +34,9 @@ namespace EventBooking.Application.Features.Customers.Commands
             var customer = _mapper.Map<Customer>(request.Create);
             customer.Id = Guid.NewGuid();
             customer.CreatedAt = DateTime.UtcNow;
+            
+            // Hash the password using BCrypt
+            customer.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Create.Password);
 
             await _repo.AddAsync(customer);
             return _mapper.Map<CustomerDto>(customer);

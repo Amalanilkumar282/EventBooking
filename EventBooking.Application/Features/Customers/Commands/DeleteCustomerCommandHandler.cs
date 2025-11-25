@@ -5,6 +5,9 @@ using EventBooking.Application.Interfaces;
 
 namespace EventBooking.Application.Features.Customers.Commands
 {
+    /// <summary>
+    /// Handler for deleting a customer
+    /// </summary>
     public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand, Unit>
     {
         private readonly ICustomerRepository _repo;

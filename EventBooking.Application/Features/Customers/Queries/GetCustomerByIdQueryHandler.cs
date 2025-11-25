@@ -7,6 +7,9 @@ using EventBooking.Application.Interfaces;
 
 namespace EventBooking.Application.Features.Customers.Queries
 {
+    /// <summary>
+    /// Handler for retrieving a specific customer by ID
+    /// </summary>
     public class GetCustomerByIdQueryHandler : IRequestHandler<GetCustomerByIdQuery, CustomerDto>
     {
         private readonly ICustomerRepository _repo;

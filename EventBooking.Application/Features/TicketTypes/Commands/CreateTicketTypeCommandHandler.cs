@@ -9,6 +9,9 @@ using EventBooking.Domain.Entities;
 
 namespace EventBooking.Application.Features.TicketTypes.Commands
 {
+    /// <summary>
+    /// Handler for creating a new ticket type with validation
+    /// </summary>
     public class CreateTicketTypeCommandHandler : IRequestHandler<CreateTicketTypeCommand, TicketTypeDto>
     {
         private readonly ITicketTypeRepository _repo;
