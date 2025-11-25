@@ -19,7 +19,7 @@ namespace EventBooking.Application.Features.Bookings.Commands
 
         public async Task<Unit> Handle(DeleteBookingCommand request, CancellationToken cancellationToken)
         {
-            await _repo.DeleteAsync(request.Id);
+            await _repo.DeleteAsync(request.Id, cancellationToken);
             return Unit.Value;
         }
     }

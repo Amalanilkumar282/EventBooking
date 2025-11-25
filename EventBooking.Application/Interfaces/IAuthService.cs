@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using EventBooking.Application.DTOs;
 
@@ -14,6 +15,7 @@ namespace EventBooking.Application.Interfaces
         /// <param name="loginDto">Login credentials</param>
         /// <returns>Login response with access token</returns>
         Task<LoginResponseDto?> LoginAsync(LoginDto loginDto);
+        Task<LoginResponseDto?> LoginAsync(LoginDto loginDto, CancellationToken cancellationToken);
 
         /// <summary>
         /// Registers a new customer with hashed password
@@ -21,5 +23,6 @@ namespace EventBooking.Application.Interfaces
         /// <param name="registerDto">Registration information</param>
         /// <returns>Customer DTO of created customer</returns>
         Task<CustomerDto> RegisterAsync(RegisterDto registerDto);
+        Task<CustomerDto> RegisterAsync(RegisterDto registerDto, CancellationToken cancellationToken);
     }
 }

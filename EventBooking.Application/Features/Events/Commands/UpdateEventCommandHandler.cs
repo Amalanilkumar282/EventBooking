@@ -25,7 +25,7 @@ namespace EventBooking.Application.Features.Events.Commands
 
         public async Task<EventDto?> Handle(UpdateEventCommand request, CancellationToken cancellationToken)
         {
-            var existing = await _repo.GetByIdAsync(request.Id);
+            var existing = await _repo.GetByIdAsync(request.Id, cancellationToken);
             if (existing == null) return null; // return null so controller can return 404
 
             // Preserve original values for nullable source members so we don't overwrite them with defaults
@@ -46,7 +46,7 @@ namespace EventBooking.Application.Features.Events.Commands
                 existing.IsActive = originalIsActive;
             }
 
-            await _repo.UpdateAsync(existing);
+            await _repo.UpdateAsync(existing, cancellationToken);
 
             return _mapper.Map<EventDto>(existing);
         }

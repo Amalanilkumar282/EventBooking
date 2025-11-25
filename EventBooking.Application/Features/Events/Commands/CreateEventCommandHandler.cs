@@ -29,7 +29,7 @@ namespace EventBooking.Application.Features.Events.Commands
             ev.Id = Guid.NewGuid();
             ev.CreatedAt = DateTime.UtcNow;
 
-            await _repo.AddAsync(ev);
+            await _repo.AddAsync(ev, cancellationToken);
             return _mapper.Map<EventDto>(ev);
         }
     }

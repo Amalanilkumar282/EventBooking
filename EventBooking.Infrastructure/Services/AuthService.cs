@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using EventBooking.Application.DTOs;
@@ -35,18 +36,15 @@ namespace EventBooking.Infrastructure.Services
             _logger = logger;
         }
 
-        /// <summary>
-        /// Logs in a customer using the provided credentials
-        /// </summary>
-        /// <param name="loginDto">The login credentials</param>
-        /// <returns>A task that represents the asynchronous operation
-        /// The task result contains the login response data transfer object</returns>
-        public async Task<LoginResponseDto?> LoginAsync(LoginDto loginDto)
+        public Task<LoginResponseDto?> LoginAsync(LoginDto loginDto)
+            => LoginAsync(loginDto, CancellationToken.None);
+
+        public async Task<LoginResponseDto?> LoginAsync(LoginDto loginDto, CancellationToken cancellationToken)
         {
             _logger.LogDebug("Attempting login for Email={Email}", loginDto.Email);
 
             // Find customer by email
-            var customer = await _customerRepo.GetByEmailAsync(loginDto.Email);
+            var customer = await _customerRepo.GetByEmailAsync(loginDto.Email, cancellationToken);
             
             if (customer == null)
             {
@@ -81,18 +79,15 @@ namespace EventBooking.Infrastructure.Services
             };
         }
 
-        /// <summary>
-        /// Registers a new customer
-        /// </summary>
-        /// <param name="registerDto">The registration data</param>
-        /// <returns>A task that represents the asynchronous operation
-        /// The task result contains the registered customer data transfer object</returns>
-        public async Task<CustomerDto> RegisterAsync(RegisterDto registerDto)
+        public Task<CustomerDto> RegisterAsync(RegisterDto registerDto)
+            => RegisterAsync(registerDto, CancellationToken.None);
+
+        public async Task<CustomerDto> RegisterAsync(RegisterDto registerDto, CancellationToken cancellationToken)
         {
             _logger.LogDebug("Registering new customer Email={Email}", registerDto.Email);
 
             // Check if email already exists
-            if (await _customerRepo.EmailExistsAsync(registerDto.Email))
+            if (await _customerRepo.EmailExistsAsync(registerDto.Email, null, cancellationToken))
             {
                 _logger.LogWarning("Registration failed for Email={Email}: email already exists", registerDto.Email);
                 throw new InvalidOperationException($"Customer with email '{registerDto.Email}' already exists.");
@@ -113,7 +108,7 @@ namespace EventBooking.Infrastructure.Services
                 CreatedAt = DateTime.UtcNow
             };
 
-            await _customerRepo.AddAsync(customer);
+            await _customerRepo.AddAsync(customer, cancellationToken);
 
             _logger.LogInformation("Customer registered CustomerId={CustomerId}, Email={Email}", customer.Id, customer.Email);
             

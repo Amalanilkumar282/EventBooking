@@ -29,7 +29,7 @@ namespace EventBooking.Api.Controllers
         public async Task<IActionResult> Get([FromQuery] int page = 1, [FromQuery] int pageSize = 20)
         {
             var q = new GetBookingsQuery { Page = page, PageSize = pageSize };
-            var bookings = await _mediator.Send(q);
+            var bookings = await _mediator!.Send(q, HttpContext.RequestAborted);
             return Ok(bookings);
         }
 
@@ -42,7 +42,7 @@ namespace EventBooking.Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
-            var booking = await _mediator.Send(new GetBookingByIdQuery { Id = id });
+            var booking = await _mediator!.Send(new GetBookingByIdQuery { Id = id }, HttpContext.RequestAborted);
             if (booking == null) return NotFound();
             return Ok(booking);
         }
@@ -57,7 +57,7 @@ namespace EventBooking.Api.Controllers
         public async Task<IActionResult> Post([FromBody] CreateBookingDto create)
         {
             var cmd = new CreateBookingCommand { Create = create };
-            var result = await _mediator.Send(cmd);
+            var result = await _mediator!.Send(cmd, HttpContext.RequestAborted);
             return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
         }
 
@@ -72,7 +72,7 @@ namespace EventBooking.Api.Controllers
         public async Task<IActionResult> Put(Guid id, [FromBody] UpdateBookingDto update)
         {
             var cmd = new UpdateBookingCommand { Id = id, Update = update };
-            var result = await _mediator.Send(cmd);
+            var result = await _mediator!.Send(cmd, HttpContext.RequestAborted);
             if (result == null) return NotFound();
             return Ok(result);
         }
@@ -87,7 +87,7 @@ namespace EventBooking.Api.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             var cmd = new DeleteBookingCommand { Id = id };
-            await _mediator.Send(cmd);
+            await _mediator!.Send(cmd, HttpContext.RequestAborted);
             return NoContent();
         }
     }
