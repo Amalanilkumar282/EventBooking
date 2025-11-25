@@ -13,18 +13,12 @@ namespace EventBooking.Api.Controllers
     /// <summary>
     /// API controller for managing bookings
     /// </summary>
-    [ApiController]
     [Route("api/[controller]")]
     [Authorize] // Require authentication for all endpoints
-    public class BookingsController : ControllerBase
+    public class BookingsController : BaseController
     {
-        private readonly IMediator _mediator;
-        private readonly IMapper _mapper;
-
-        public BookingsController(IMediator mediator, IMapper mapper)
+        public BookingsController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
         {
-            _mediator = mediator;
-            _mapper = mapper;
         }
 
         /// <summary>

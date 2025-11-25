@@ -10,11 +10,11 @@ namespace EventBooking.Api.Controllers
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    public class TestController : ControllerBase
+    public class TestController : BaseController
     {
         private readonly ICustomerRepository _customerRepo;
 
-        public TestController(ICustomerRepository customerRepo)
+        public TestController(ICustomerRepository customerRepo) : base()
         {
             _customerRepo = customerRepo;
         }

@@ -13,18 +13,12 @@ namespace EventBooking.Api.Controllers
     /// <summary>
     /// API controller for managing ticket types
     /// </summary>
-    [ApiController]
     [Route("api/[controller]")]
     [Authorize] // Require authentication for all endpoints
-    public class TicketTypesController : ControllerBase
+    public class TicketTypesController : BaseController
     {
-        private readonly IMediator _mediator;
-        private readonly IMapper _mapper;
-
-        public TicketTypesController(IMediator mediator, IMapper mapper)
+        public TicketTypesController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
         {
-            _mediator = mediator;
-            _mapper = mapper;
         }
 
         /// <summary>
@@ -35,7 +29,7 @@ namespace EventBooking.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var ticketTypes = await _mediator.Send(new GetTicketTypesQuery());
+            var ticketTypes = await _mediator!.Send(new GetTicketTypesQuery());
             return Ok(ticketTypes);
         }
 
@@ -48,7 +42,7 @@ namespace EventBooking.Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
-            var ticketType = await _mediator.Send(new GetTicketTypeByIdQuery { Id = id });
+            var ticketType = await _mediator!.Send(new GetTicketTypeByIdQuery { Id = id });
             if (ticketType == null) return NotFound();
             return Ok(ticketType);
         }
@@ -63,7 +57,7 @@ namespace EventBooking.Api.Controllers
         public async Task<IActionResult> Post([FromBody] CreateTicketTypeDto create)
         {
             var cmd = new CreateTicketTypeCommand { Create = create };
-            var result = await _mediator.Send(cmd);
+            var result = await _mediator!.Send(cmd);
             return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
         }
 
@@ -78,7 +72,7 @@ namespace EventBooking.Api.Controllers
         public async Task<IActionResult> Put(Guid id, [FromBody] UpdateTicketTypeDto update)
         {
             var cmd = new UpdateTicketTypeCommand { Id = id, Update = update };
-            var result = await _mediator.Send(cmd);
+            var result = await _mediator!.Send(cmd);
             if (result == null) return NotFound();
             return Ok(result);
         }
@@ -93,7 +87,7 @@ namespace EventBooking.Api.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             var cmd = new DeleteTicketTypeCommand { Id = id };
-            await _mediator.Send(cmd);
+            await _mediator!.Send(cmd);
             return NoContent();
         }
     }

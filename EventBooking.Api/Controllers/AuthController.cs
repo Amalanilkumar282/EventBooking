@@ -10,13 +10,12 @@ namespace EventBooking.Api.Controllers
     /// Authentication controller for login and registration
     /// These endpoints do NOT require authorization (they're public)
     /// </summary>
-    [ApiController]
     [Route("api/[controller]")]
-    public class AuthController : ControllerBase
+    public class AuthController : BaseController
     {
         private readonly IAuthService _authService;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService) : base()
         {
             _authService = authService;
         }
