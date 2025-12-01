@@ -87,6 +87,18 @@ services.AddMediatR(typeof(CreateEventCommand).Assembly);
 // Register MediatR validation behavior so validators run automatically (defense-in-depth)
 services.AddTransient(typeof(MediatR.IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
+// Configure CORS for Angular frontend
+services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularApp", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
 // Configure JWT Authentication
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var secretKey = jwtSettings["SecretKey"] ?? throw new InvalidOperationException("JWT SecretKey not configured");
@@ -203,6 +215,9 @@ if (app.Environment.IsDevelopment())
 app.MapOpenApi();
 
 app.UseHttpsRedirection();
+
+// Enable CORS before authentication/authorization
+app.UseCors("AllowAngularApp");
 
 // IMPORTANT: Authentication must come before Authorization
 app.UseAuthentication();
